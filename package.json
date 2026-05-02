@@ -1,0 +1,44 @@
+{
+  "name": "automationexercise-pw-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "format": "npx @biomejs/biome format --write",
+    "lint": "npx @biomejs/biome lint --write",
+    "prepare": "husky",
+    "test": "npx playwright test",
+    "test:admin": "npx playwright test --grep @admin",
+    "test:default-user": "npx playwright test --grep @default-user"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js}": [
+      "biome check --write",
+      "biome format --write"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmbaikalov/automationexercise-pw-ts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dmbaikalov/automationexercise-pw-ts/issues"
+  },
+  "homepage": "https://github.com/dmbaikalov/automationexercise-pw-ts#readme",
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.10",
+    "@faker-js/faker": "^10.2.0",
+    "@playwright/test": "1.57.0",
+    "@types/node": "^25.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "typescript": "^5.9.3"
+  }
+}
