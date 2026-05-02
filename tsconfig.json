@@ -1,23 +1,30 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    // Language & Environment
+    "target": "ES2022",
+    "lib": ["ES2022"],
 
-    "module": "CommonJS",
-
-    "moduleResolution": "node",
-
-    "ignoreDeprecations": "6.0",
-
-    "strict": true,
-
+    // Modules
+    "module": "commonjs",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
 
+    // Type Checking
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // File Management
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
 
-    "outDir": "src/specs",
-
-    "types": ["@playwright/test"]
+    // Output Structure
+    "outDir": "./dist",
+    "rootDir": "./"
   },
-
-  "include": ["src/specs/**/*.spec.ts"]
+  "include": ["**/*spec.ts"],
+  "exclude": ["node_modules", "playwright-report", "test-results"]
 }

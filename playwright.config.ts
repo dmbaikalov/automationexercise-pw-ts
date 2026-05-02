@@ -12,8 +12,8 @@ export default defineConfig({
     ? [["junit"], ["html", { open: "never" }]]
     : [["html", { open: "never" }], ["list"]],
   use: {
-    baseURL: process.env.BASE_URL || "http://localhost:3000",
-    testIdAttribute: "data-test",
+    baseURL: process.env.BASE_URL,
+    testIdAttribute: "data-qa",
     trace: "on",
     screenshot: "only-on-failure",
     actionTimeout: 10000,
