@@ -15,7 +15,7 @@ export const test = base.extend<TestFixtures>({
 		await use(app);
 	},
 
-	userBuilder: async (_, use) => {
+	userBuilder: async ({ page }, use) => {
 		await use(UserBuilder.create());
 	},
 

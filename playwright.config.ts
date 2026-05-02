@@ -24,10 +24,10 @@ export default defineConfig({
   },
   //globalTeardown: require.resolve("./src/specs/setup/global.teardown.ts"),
   projects: [
-    {
-      name: "setup",
-      testMatch: /.*\.setup\.ts/,
-    },
+    // {
+    //   name: "setup",
+    //   testMatch: /.*\.setup\.ts/,
+    // },
 
     {
       name: "regression",

@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import type { TUser } from "../../types/User.types";
 import BasePage from "../basePage.po";
 
 export class SignUpPage extends BasePage {
@@ -19,7 +20,7 @@ export class SignUpPage extends BasePage {
 	}
 
 	private get sexRadioBtn(): Locator {
-		return this.page.locator("radio-inline");
+		return this.page.locator(".radio-inline");
 	}
 
 	private get dateOfBirthPicker(): Locator {
@@ -29,15 +30,15 @@ export class SignUpPage extends BasePage {
 	}
 
 	private get pickDayOfBirth(): Locator {
-		return this.dateOfBirthPicker.locator("#uniform-days");
+		return this.dateOfBirthPicker.getByTestId("days");
 	}
 
 	private get pickMonthOfBirth(): Locator {
-		return this.dateOfBirthPicker.locator("#uniform-months");
+		return this.dateOfBirthPicker.getByTestId("months");
 	}
 
 	private get pickYearOfBirth(): Locator {
-		return this.dateOfBirthPicker.locator("#uniform-years");
+		return this.dateOfBirthPicker.getByTestId("years");
 	}
 
 	get signUpForNewsLetterCheckBox(): Locator {
@@ -112,5 +113,30 @@ export class SignUpPage extends BasePage {
 		await this.pickDayOfBirth.selectOption(day);
 		await this.pickMonthOfBirth.selectOption(month);
 		await this.pickYearOfBirth.selectOption(year);
+	}
+
+	async fillSignUpForm(
+		userData: TUser,
+		sex: string,
+		dateOfBirth: { day: string; month: string; year: string },
+		country: string,
+	): Promise<void> {
+		await this.passwordInput.fill(userData.password);
+		await this.pickSex(sex);
+		await this.pickDateOfBirth(
+			dateOfBirth.day,
+			dateOfBirth.month,
+			dateOfBirth.year,
+		);
+		await this.signUpForNewsLetterCheckBox.check();
+		await this.receiveSpecialOfferCheckBox.check();
+		await this.firstNameInput.fill(userData.firstName);
+		await this.lastNameInput.fill(userData.lastName);
+		await this.addressInput.fill(userData.address);
+		await this.pickCountry(country);
+		await this.stateInput.fill(userData.state);
+		await this.cityInput.fill(userData.city);
+		await this.zipcodeInput.fill(userData.zipcode);
+		await this.mobileNumberInput.fill(userData.number);
 	}
 }

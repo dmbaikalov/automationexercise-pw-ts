@@ -8,11 +8,11 @@ export class HomePage extends BasePage {
 	//loginSignUpButton = navbar.locator(" Signup / Login");
 
 	private get navbar(): Locator {
-		return this.page.locator("nav");
+		return this.page.locator(".shop-menu");
 	}
 
 	get loginButton(): Locator {
-		return this.navbar.locator(" Signup / Login");
+		return this.navbar.locator('a[href="/login"]');
 	}
 
 	get mainHeader(): Locator {
