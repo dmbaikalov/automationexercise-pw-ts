@@ -15,7 +15,8 @@ export const test = base.extend<TestFixtures>({
 		await use(app);
 	},
 
-	userBuilder: async ({ page }, use) => {
+	// biome-ignore lint/correctness/noEmptyPattern: required by Playwright fixture API
+	userBuilder: async ({}, use) => {
 		await use(UserBuilder.create());
 	},
 
