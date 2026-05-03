@@ -1,4 +1,4 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 export default class BasePage {
 	protected page: Page;
@@ -28,5 +28,13 @@ export default class BasePage {
 
 	async actualUrl(): Promise<string> {
 		return this.page.url();
+	}
+
+	async uploadFile(slc: Locator, fileName: string): Promise<void> {
+		await slc.setInputFiles(`src/test-data/${fileName}`);
+	}
+
+	async isTextVisible(text: string): Promise<boolean> {
+		return this.page.getByText(text).isVisible();
 	}
 }

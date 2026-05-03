@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { isStorageStateEmpty } from "./env-config";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -22,17 +23,17 @@ export default defineConfig({
   expect: {
     timeout: 10000,
   },
-  //globalTeardown: require.resolve("./src/specs/setup/global.teardown.ts"),
+  globalTeardown: require.resolve("./src/specs/setup/global.teardown.ts"),
   projects: [
-    // {
-    //   name: "setup",
-    //   testMatch: /.*\.setup\.ts/,
-    // },
+    {
+      name: "setup",
+      testMatch: /.*\.setup\.ts/,
+    },
 
     {
       name: "regression",
       use: { ...devices["Desktop Chrome"] },
-      //dependencies: isStorageStateEmpty() ? ["setup"] : [],
+      dependencies: isStorageStateEmpty() ? ["setup"] : [],
     },
   ],
 });

@@ -10,15 +10,36 @@ export class LoginPage extends BasePage {
 		return this.page.locator("h2").filter({ hasText: "New User Signup!" });
 	}
 
+	get loginHeader(): Locator {
+		return this.page.locator("h2").filter({ hasText: "Login to your account" });
+	}
+
 	get nameInput(): Locator {
 		return this.page.getByTestId("signup-name");
 	}
 
-	get emailInput(): Locator {
+	get emailSignUpInput(): Locator {
 		return this.page.getByTestId("signup-email");
+	}
+
+	get emailLoginInput(): Locator {
+		return this.page.getByTestId("login-email");
+	}
+
+	get passwordInput(): Locator {
+		return this.page.getByTestId("login-password");
+	}
+
+	get loginBtn(): Locator {
+		return this.page.getByTestId("login-button");
 	}
 
 	get signUpBtn(): Locator {
 		return this.page.getByTestId("signup-button");
+	}
+
+	async isErrorMsgVisible(errorMsg: string): Promise<boolean> {
+		const errorSlc = this.page.locator("p").filter({ hasText: `${errorMsg}` });
+		return await errorSlc.isVisible();
 	}
 }

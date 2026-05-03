@@ -1,5 +1,5 @@
 import BasePage from "./basePage.po";
-import { HomePage, LoginPage, SignUpPage } from "./index";
+import { ContactUs, HomePage, LoginPage, SignUpPage } from "./index";
 
 export default class Application extends BasePage {
 	get loginPage() {
@@ -12,5 +12,9 @@ export default class Application extends BasePage {
 
 	get signUpPage() {
 		return new SignUpPage(this.page);
+	}
+
+	get contactUsPage() {
+		return new ContactUs(this.page);
 	}
 }
