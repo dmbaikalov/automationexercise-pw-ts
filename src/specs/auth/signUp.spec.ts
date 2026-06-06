@@ -2,10 +2,9 @@ import { config } from "../../../env-config";
 import { expect, test } from "../../fixtures/fixtures";
 
 test.describe("@signup @regression Login / Logout flow", async () => {
-	test("@TSK-001 Register User", async ({
-		app,
-		createRandomUser: userData,
-	}) => {
+	test("@TSK-001 Register User", {
+		tag: ["@sign_up", "@regression"],
+	}, async ({ app, createRandomUser: userData }) => {
 		await app.homePage.open();
 		expect.soft(app.homePage.mainHeader).toBeVisible();
 
@@ -37,7 +36,9 @@ test.describe("@signup @regression Login / Logout flow", async () => {
 		await app.signUpPage.isAccountCreated();
 	});
 
-	test("@TSK-004 Register User with existing email", async ({ app }) => {
+	test("@TSK-004 Register User with existing email", {
+		tag: ["@sign_up", "@regression"],
+	}, async ({ app }) => {
 		await app.homePage.open();
 		expect.soft(app.homePage.mainHeader).toBeVisible();
 
