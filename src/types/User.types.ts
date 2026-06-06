@@ -1,4 +1,4 @@
-export type TUser = {
+export type TUser = Readonly<{
 	firstName: string;
 	lastName: string;
 	username: string;
@@ -9,4 +9,4 @@ export type TUser = {
 	city: string;
 	zipcode: string;
 	number: string;
-};
+}>;

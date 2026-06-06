@@ -2,7 +2,7 @@ import { config } from "../../../env-config";
 import { CONTEXT_TESTUSER } from "../../../globals";
 import { expect, test as setup } from "../../fixtures/fixtures";
 
-setup(`Authenticate ${config.userName}`, async ({ app, page }) => {
+setup(`Authenticate ${config.userName} user`, async ({ app, page }) => {
 	await app.loginPage.open();
 
 	await app.loginPage.emailLoginInput.fill(config.userEmail);
