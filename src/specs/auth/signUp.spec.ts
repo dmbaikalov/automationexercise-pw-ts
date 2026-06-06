@@ -1,7 +1,7 @@
 import { config } from "../../../env-config";
 import { expect, test } from "../../fixtures/fixtures";
 
-test.describe("@signup @regression Login / Logout flow", async () => {
+test.describe("Login / Logout flow", async () => {
 	test("@TSK-001 Register User", {
 		tag: ["@sign_up", "@regression"],
 	}, async ({ app, createRandomUser: userData }) => {
