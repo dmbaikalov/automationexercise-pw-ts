@@ -29,6 +29,12 @@ export class HomePage extends BasePage {
 		return this.navbar.locator(".fa-user");
 	}
 
+	/**
+	 *
+	 * Validating that username is visible in header
+	 * @return {*}  {Promise<boolean>}
+	 * @memberof HomePage
+	 */
 	async isLoggedIn(): Promise<boolean> {
 		return await this.loggedInAs.isVisible();
 	}

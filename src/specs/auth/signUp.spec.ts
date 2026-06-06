@@ -1,16 +1,26 @@
 import { config } from "../../../env-config";
 import { expect, test } from "../../fixtures/fixtures";
 
-test.describe("Login / Logout flow", async () => {
-	test("@TSK-001 Register User", {
-		tag: ["@sign_up", "@regression"],
-	}, async ({ app, createRandomUser: userData }) => {
+test.beforeEach(async ({ app }) => {
+	await test.step("Navigating to Home Page", async () => {
 		await app.homePage.open();
 		expect.soft(app.homePage.mainHeader).toBeVisible();
+	});
 
+	await test.step("Navigating to Sign Up Page", async () => {
 		await app.homePage.loginButton.click();
 		expect.soft(app.loginPage.signUpHeader).toBeVisible();
+	});
+});
 
+test.describe("Sign Up flow", {
+	tag: ["@sign_up", "@regression"],
+}, async () => {
+	test("@TSK-001 Register User", async ({
+		app,
+		createRandomUser: userData,
+	}) => {
+		await test.step("Filling and submitting sign up form", async () => {});
 		await app.loginPage.nameInput.fill(userData.username);
 		await app.loginPage.emailSignUpInput.fill(userData.email);
 		Promise.all([
@@ -18,38 +28,37 @@ test.describe("Login / Logout flow", async () => {
 			await app.waitForUrl("/signup"),
 		]);
 
-		await app.signUpPage.fillSignUpForm(
-			userData,
-			"Mr. ",
-			{ day: "3", month: "July", year: "2000" },
-			"Canada",
-		);
+		await test.step("Filling and submitting user info data", async () => {
+			await app.signUpPage.fillSignUpForm(
+				userData,
+				"Mr. ",
+				{ day: "3", month: "July", year: "2000" },
+				"Canada",
+			);
+			expect
+				.soft(await app.signUpPage.nameInput.inputValue())
+				.toContain(userData.username);
+			expect
+				.soft(await app.signUpPage.emailInput.inputValue())
+				.toContain(userData.email);
+			await app.signUpPage.createAccBtn.click();
+		});
 
-		expect
-			.soft(await app.signUpPage.nameInput.inputValue())
-			.toContain(userData.username);
-		expect
-			.soft(await app.signUpPage.emailInput.inputValue())
-			.toContain(userData.email);
-		await app.signUpPage.createAccBtn.click();
-
-		await app.signUpPage.isAccountCreated();
+		await test.step("Validating that new user were created", async () => {
+			await app.signUpPage.isAccountCreated();
+		});
 	});
 
-	test("@TSK-004 Register User with existing email", {
-		tag: ["@sign_up", "@regression"],
-	}, async ({ app }) => {
-		await app.homePage.open();
-		expect.soft(app.homePage.mainHeader).toBeVisible();
+	test("@TSK-004 Register User with existing email", async ({ app }) => {
+		await test.step("Filling and submitting Sign up form with existing email", async () => {
+			await app.loginPage.nameInput.fill(config.userName);
+			await app.loginPage.emailSignUpInput.fill(config.userEmail);
+			await app.loginPage.signUpBtn.click();
+		});
 
-		await app.homePage.loginButton.click();
-		expect.soft(app.loginPage.signUpHeader).toBeVisible();
-
-		await app.loginPage.nameInput.fill(config.userName);
-		await app.loginPage.emailSignUpInput.fill(config.userEmail);
-		await app.loginPage.signUpBtn.click();
-
-		const errorMsg = "Email Address already exist!";
-		expect(await app.loginPage.isErrorMsgVisible(errorMsg)).toBeTruthy();
+		await test.step("Validating that error message have appeared", async () => {
+			const errorMsg = "Email Address already exist!";
+			expect(await app.loginPage.isErrorMsgVisible(errorMsg)).toBeTruthy();
+		});
 	});
 });

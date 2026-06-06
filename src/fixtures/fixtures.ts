@@ -10,7 +10,11 @@ type TestFixtures = {
 };
 
 export const test = base.extend<TestFixtures>({
-	app: async ({ page }, use) => {
+	app: async ({ browser, page }, use) => {
+		test.info().annotations.push({
+			type: "Browser",
+			description: `${browser.browserType().name()} ${browser.version()}`,
+		});
 		const app = new Application(page, "/");
 		await use(app);
 	},

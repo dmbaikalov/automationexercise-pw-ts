@@ -2,23 +2,26 @@ import { config } from "../../../env-config";
 import { expect, test } from "../../fixtures/fixtures";
 import { userIncorrectData } from "../../test_data/userIncorrectData";
 
+test.beforeEach(async ({ app }) => {
+	await test.step("Navigating to Home Page", async () => {
+		await app.homePage.open();
+		expect.soft(app.homePage.mainHeader).toBeVisible();
+	});
+
+	await test.step("Navigating to Login Page", async () => {
+		await app.homePage.loginButton.click();
+		expect.soft(app.loginPage.signUpHeader).toBeVisible();
+	});
+});
+
 test.describe("Login / Logout flow", {
 	tag: ["@login", "@smoke", "@regression"],
 }, () => {
 	test.use({ storageState: config.guestContext });
 
-	test("@TSK-002 Login User with correct email and password", {
-		tag: ["@login", "@smoke"],
-	}, async ({ app }) => {
-		await test.step("Opening home page", async () => {
-			await app.homePage.open();
-			expect(await app.homePage.mainHeader.isVisible()).toBeTruthy();
-		});
-
-		await test.step("Navigating to login page", async () => {
-			await app.homePage.loginButton.click();
-		});
-
+	test("@TSK-002 Login User with correct email and password", async ({
+		app,
+	}) => {
 		await test.step("Filling credentials into the login form", async () => {
 			await app.homePage.loginButton.click();
 			await app.loginPage.emailLoginInput.fill(config.userEmail);
@@ -49,16 +52,10 @@ test.describe("Login / Logout flow", {
 	});
 
 	userIncorrectData.forEach(({ email, password, errorMsg }) => {
-		test(`@TSK-003 Login User with incorrect ${email} and ${password}`, {
-			tag: ["@login", "@regression"],
-		}, async ({ app }) => {
-			await test.step("Opening home page", async () => {
-				await app.homePage.open();
-				expect(await app.homePage.mainHeader.isVisible()).toBeTruthy();
-			});
-
-			await test.step("Navigating to login page and filling incorrect credentials", async () => {
-				await app.homePage.loginButton.click();
+		test(`@TSK-003 Login User with incorrect ${email} and ${password}`, async ({
+			app,
+		}) => {
+			await test.step("Filling incorrect credentials in Login form", async () => {
 				await app.loginPage.emailLoginInput.fill(email);
 				await app.loginPage.passwordInput.fill(password);
 			});

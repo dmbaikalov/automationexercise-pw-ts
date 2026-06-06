@@ -38,6 +38,12 @@ export class LoginPage extends BasePage {
 		return this.page.getByTestId("signup-button");
 	}
 
+	/**
+	 *
+	 * Validates that error message is visible
+	 * @param {string} errorMsg
+	 * @return {*}  {Promise<boolean>}
+	 */
 	async isErrorMsgVisible(errorMsg: string): Promise<boolean> {
 		const errorSlc = this.page.locator("p").filter({ hasText: `${errorMsg}` });
 		return await errorSlc.isVisible();

@@ -1,21 +1,25 @@
 import { config } from "../../../env-config";
 import { expect, test } from "../../fixtures/fixtures";
 
+test.beforeEach(async ({ app }) => {
+	await test.step("Navigating to Home Page", async () => {
+		await app.homePage.open();
+		expect.soft(app.homePage.mainHeader).toBeVisible();
+	});
+
+	await test.step("Navigating to Contact Us Page", async () => {
+		await app.homePage.contactUsBtn.click();
+		expect(await app.contactUsPage.actualUrl()).toContain("/contact_us");
+		expect(await app.contactUsPage.mainHeader.isVisible()).toBeTruthy();
+	});
+});
+
 test.describe("Contact Us functionality flow", {
-	tag: ["@contact_us"],
+	tag: ["@contact_us", "@regression"],
 }, async () => {
 	test.use({ storageState: config.testUserContext });
 
-	test("@TSK-005 Sending Contact Us form", {
-		tag: ["@contact_us", "@regression"],
-	}, async ({ app }) => {
-		await test.step("Opening Contact Us page", async () => {
-			await app.homePage.open();
-			await app.homePage.contactUsBtn.click();
-			expect(await app.contactUsPage.actualUrl()).toContain("/contact_us");
-			expect(await app.contactUsPage.mainHeader.isVisible()).toBeTruthy();
-		});
-
+	test("@TSK-005 Sending Contact Us form", async ({ app }) => {
 		await test.step("Validate that email input is required", async () => {
 			expect(app.contactUsPage.emailInput).toHaveAttribute(
 				"required",
@@ -23,7 +27,7 @@ test.describe("Contact Us functionality flow", {
 			);
 		});
 
-		await test.step("Filling Contact us form", async () => {
+		await test.step("Filling and submitting Contact Us form", async () => {
 			await app.contactUsPage.nameInput.fill("");
 			await app.contactUsPage.emailInput.fill("");
 			await app.contactUsPage.subjectInput.fill("");
