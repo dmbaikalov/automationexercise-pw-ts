@@ -17,7 +17,6 @@ jobs:
         with:
           node-version: latest
 
-      # Install Playwright Framework
       - name: Install Playwright Framework
         run: |
           npm install
@@ -32,7 +31,6 @@ jobs:
           BASE_URL: ${{ secrets.BASE_URL }}
           BASE_API_URL: ${{ secrets.BASE_API_URL }}
 
-      # Uploading the Report
       - name: Upload Pages Artifact
         if: always()
         uses: actions/upload-pages-artifact@v4
