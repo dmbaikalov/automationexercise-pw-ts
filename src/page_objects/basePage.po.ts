@@ -28,7 +28,7 @@ export default class BasePage {
 	 * @memberof BasePage
 	 */
 	async open(): Promise<void> {
-		await this.page.goto("" + this._uri);
+		await this.page.goto(`${this._uri}`);
 	}
 
 	/**

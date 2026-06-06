@@ -30,7 +30,7 @@ export default defineConfig({
     },
 
     {
-      name: "regression",
+      name: "ui e2e",
       use: { ...devices["Desktop Chrome"] },
       dependencies: isStorageStateEmpty() ? ["setup"] : [],
     },
