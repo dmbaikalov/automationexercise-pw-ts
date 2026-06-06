@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import { CONTEXT_TESTUSER, CONTEXT_GUEST } from "./globals";
 import dotenv from "dotenv";
-dotenv.config();
 
 const processEnv = process.env.TEST_ENV;
 const env = processEnv || "local";

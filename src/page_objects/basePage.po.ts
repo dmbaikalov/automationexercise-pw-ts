@@ -31,7 +31,7 @@ export default class BasePage {
 	}
 
 	async uploadFile(slc: Locator, fileName: string): Promise<void> {
-		await slc.setInputFiles(`src/test-data/${fileName}`);
+		await slc.setInputFiles(`src/test_data/${fileName}`);
 	}
 
 	async isTextVisible(text: string): Promise<boolean> {

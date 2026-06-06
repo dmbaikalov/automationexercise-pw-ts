@@ -1,6 +1,6 @@
 import { config } from "../../../env-config";
 import { expect, test } from "../../fixtures/fixtures";
-import { userIncorrectData } from "../../test-data/userIncorrectData";
+import { userIncorrectData } from "../../test_data/userIncorrectData";
 
 test.describe("Login / Logout flow", {
 	tag: ["@login", "@smoke", "@regression"],
