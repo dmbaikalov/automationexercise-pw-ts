@@ -78,22 +78,49 @@ npx playwright show-report
 ## 📁 Project Structure
 
 ```
-src/
-├── fixtures/              # Reusable test setup (database, API, etc.)
-├── page_objects/          # Page Object Model files
-│   ├── basePage.po.ts     # Base class for all pages
-│   ├── app.po.ts          # Facade page (used as a main fixture for tests)
-│   ├── home_page/
-│   ├── login_page/
-│   ├── signup_page/
-│   └── contact_us/
-├── specs/                 # Actual test files
-│   ├── auth/              # Authentication tests (login, signup)
-│   ├── contact_us/        # Contact form tests
-│   └── setup/             # Setup & teardown scripts
-├── test-data/             # Test data files
-├── types/                 # TypeScript type definitions
-└── utils/                 # Helper functions
+automationexercise-pw-ts/
+└── src/
+    ├── fixtures/
+    │   └── fixtures.ts                # Playwright fixtures - app instance, test user builder, auth setup
+    ├── page_objects/
+    │   ├── index.ts                   # Barrel export file for all page objects
+    │   ├── basePage.po.ts             # Base class with common page methods (open, wait, etc.)
+    │   ├── app.po.ts                  # Facade page - aggregates all page objects
+    │   ├── home_page/
+    │   │   ├── index.ts               # Barrel export
+    │   │   └── homePage.po.ts         # Home page methods and locators
+    │   ├── login_page/
+    │   │   ├── index.ts               # Barrel export
+    │   │   └── loginPage.po.ts        # Login form methods and locators
+    │   ├── signup_page/
+    │   │   ├── index.ts               # Barrel export
+    │   │   └── signupPage.po.ts       # Sign up form methods and locators
+    │   └── contact_us/
+    │       ├── index.ts               # Barrel export
+    │       └── contactUs.po.ts        # Contact form methods and locators
+    ├── specs/                         # Test files
+    │   ├── auth/
+    │   │   ├── login.spec.ts          # Login scenario tests
+    │   │   └── signUp.spec.ts         # Sign up scenario tests
+    │   ├── contact_us/
+    │   │   └── contactUs.spec.ts      # Contact form submission tests
+    │   └── setup/
+    │       ├── global.setup.ts        # Pre-test setup (authentication, data prep)
+    │       └── global.teardown.ts     # Post-test cleanup
+    ├── test-data/
+    │   └── userIncorrectData.ts       # Test data for negative scenarios
+    ├── types/
+    │   └── User.types.ts              # TypeScript interfaces for User object
+    └── utils/
+        └── createRandUser.ts          # UserBuilder class for generating random test users
+│
+├── playwright.config.ts               # Main Playwright config - defines testDir, browsers, reporters, timeouts, trace/screenshot settings
+├── tsconfig.json                      # TypeScript compiler config - ES2022 target, strict type checking, commonjs modules
+├── biome.json                         # Code formatter & linter config - Biome rules, git integration, formatting style
+├── env-config.ts                      # Environment variables handler - loads .env, exports config object for baseUrl, credentials
+├── globals.ts                         # Global constants - storage paths for authentication contexts
+├── package.json                       # Project dependencies - Playwright, TypeScript, Faker, Biome, Husky
+└── README.md                          # This file
 ```
 
 ---
