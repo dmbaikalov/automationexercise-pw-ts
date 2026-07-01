@@ -1,8 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { TUser } from "../types/User.types";
 
+type MutableUser = { -readonly [K in keyof TUser]?: TUser[K] };
+
 export class UserBuilder {
-	private userData: Partial<TUser> = {};
+	private userData: MutableUser = {};
 
 	withFirstName(firstName?: string): this {
 		this.userData.firstName = firstName;

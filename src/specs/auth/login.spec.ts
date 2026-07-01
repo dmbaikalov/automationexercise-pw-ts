@@ -5,12 +5,12 @@ import { userIncorrectData } from "../../test_data/userIncorrectData";
 test.beforeEach(async ({ app }) => {
 	await test.step("Navigating to Home Page", async () => {
 		await app.homePage.open();
-		expect.soft(app.homePage.mainHeader).toBeVisible();
+		await expect.soft(app.homePage.mainHeader).toBeVisible();
 	});
 
 	await test.step("Navigating to Login Page", async () => {
 		await app.homePage.loginButton.click();
-		expect.soft(app.loginPage.signUpHeader).toBeVisible();
+		await expect.soft(app.loginPage.signUpHeader).toBeVisible();
 	});
 });
 
@@ -23,16 +23,13 @@ test.describe("Login / Logout flow", {
 		app,
 	}) => {
 		await test.step("Filling credentials into the login form", async () => {
-			await app.homePage.loginButton.click();
 			await app.loginPage.emailLoginInput.fill(config.userEmail);
 			await app.loginPage.passwordInput.fill(config.userPassword);
 		});
 
 		await test.step("Submitting login form", async () => {
-			await Promise.all([
-				app.loginPage.loginBtn.click(),
-				app.homePage.mainHeader.isVisible(),
-			]);
+			await app.loginPage.loginBtn.click();
+			await expect(app.homePage.mainHeader).toBeVisible();
 		});
 
 		await test.step("Verifying user is logged in", async () => {
@@ -40,10 +37,8 @@ test.describe("Login / Logout flow", {
 		});
 
 		await test.step("Clicking logout button", async () => {
-			await Promise.all([
-				app.homePage.logoutBtn.click(),
-				app.homePage.mainHeader.isVisible(),
-			]);
+			await app.homePage.logoutBtn.click();
+			await expect(app.homePage.mainHeader).toBeVisible();
 		});
 
 		await test.step("Verifying user is logged out", async () => {

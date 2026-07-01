@@ -1,36 +1,29 @@
 import BasePage from "./basePage.po";
 import { ContactUs, HomePage, LoginPage, SignUpPage } from "./index";
 
-/**
- * Represents the application under test
- */
-
 export default class Application extends BasePage {
-	/**
-	 * @type {LoginPage}
-	 */
+	private _loginPage?: LoginPage;
+	private _homePage?: HomePage;
+	private _signUpPage?: SignUpPage;
+	private _contactUsPage?: ContactUs;
+
 	get loginPage() {
-		return new LoginPage(this.page);
+		if (!this._loginPage) this._loginPage = new LoginPage(this.page);
+		return this._loginPage;
 	}
 
-	/**
-	 * @type {HomePage}
-	 */
 	get homePage() {
-		return new HomePage(this.page);
+		if (!this._homePage) this._homePage = new HomePage(this.page);
+		return this._homePage;
 	}
 
-	/**
-	 * @type {SignUpPage}
-	 */
 	get signUpPage() {
-		return new SignUpPage(this.page);
+		if (!this._signUpPage) this._signUpPage = new SignUpPage(this.page);
+		return this._signUpPage;
 	}
 
-	/**
-	 * @type {ContactUs}
-	 */
 	get contactUsPage() {
-		return new ContactUs(this.page);
+		if (!this._contactUsPage) this._contactUsPage = new ContactUs(this.page);
+		return this._contactUsPage;
 	}
 }

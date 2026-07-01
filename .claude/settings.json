@@ -1,0 +1,23 @@
+{
+	"permissions": {
+		"allow": [
+			"Bash(npx playwright test*)",
+			"Bash(npx playwright show-report*)",
+			"Bash(npx playwright show-trace*)",
+			"Bash(npx playwright --version)",
+			"Bash(npx tsc --noEmit*)",
+			"Bash(npx @biomejs/biome check*)",
+			"Bash(npx @biomejs/biome format*)",
+			"Bash(npx @biomejs/biome lint*)",
+			"Bash(npm install)",
+			"Bash(npm ci)",
+			"Bash(npm run *)",
+			"Bash(git status)",
+			"Bash(git diff*)",
+			"Bash(git log*)",
+			"Bash(git add *)",
+			"Bash(git commit*)"
+		],
+		"deny": []
+	}
+}

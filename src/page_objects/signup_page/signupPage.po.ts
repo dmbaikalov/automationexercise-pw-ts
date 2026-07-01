@@ -118,8 +118,8 @@ export class SignUpPage extends BasePage {
 	 * Validating that new user name is showed in header
 	 * @memberof SignUpPage
 	 */
-	async isAccountCreated() {
-		expect(this.accCreated).toBeVisible();
+	async isAccountCreated(): Promise<void> {
+		await expect(this.accCreated).toBeVisible();
 	}
 
 	/**

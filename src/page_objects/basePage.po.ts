@@ -7,7 +7,6 @@ export default class BasePage {
 		private _uri: string,
 	) {
 		this.page = page;
-		this._uri = _uri;
 	}
 
 	/**

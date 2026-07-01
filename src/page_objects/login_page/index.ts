@@ -1,1 +1,1 @@
-export { LoginPage } from "./loginPage.po.ts";
+export { LoginPage } from "./loginPage.po";

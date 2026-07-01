@@ -4,29 +4,30 @@ import { expect, test } from "../../fixtures/fixtures";
 test.beforeEach(async ({ app }) => {
 	await test.step("Navigating to Home Page", async () => {
 		await app.homePage.open();
-		expect.soft(app.homePage.mainHeader).toBeVisible();
+		await expect.soft(app.homePage.mainHeader).toBeVisible();
 	});
 
 	await test.step("Navigating to Sign Up Page", async () => {
 		await app.homePage.loginButton.click();
-		expect.soft(app.loginPage.signUpHeader).toBeVisible();
+		await expect.soft(app.loginPage.signUpHeader).toBeVisible();
 	});
 });
 
 test.describe("Sign Up flow", {
 	tag: ["@sign_up", "@regression"],
-}, async () => {
+}, () => {
 	test("@TSK-001 Register User", async ({
 		app,
 		createRandomUser: userData,
 	}) => {
-		await test.step("Filling and submitting sign up form", async () => {});
-		await app.loginPage.nameInput.fill(userData.username);
-		await app.loginPage.emailSignUpInput.fill(userData.email);
-		Promise.all([
-			await app.loginPage.signUpBtn.click(),
-			await app.waitForUrl("/signup"),
-		]);
+		await test.step("Filling and submitting sign up form", async () => {
+			await app.loginPage.nameInput.fill(userData.username);
+			await app.loginPage.emailSignUpInput.fill(userData.email);
+			await Promise.all([
+				app.loginPage.signUpBtn.click(),
+				app.waitForUrl("/signup"),
+			]);
+		});
 
 		await test.step("Filling and submitting user info data", async () => {
 			await app.signUpPage.fillSignUpForm(
@@ -35,12 +36,10 @@ test.describe("Sign Up flow", {
 				{ day: "3", month: "July", year: "2000" },
 				"Canada",
 			);
-			expect
-				.soft(await app.signUpPage.nameInput.inputValue())
-				.toContain(userData.username);
-			expect
-				.soft(await app.signUpPage.emailInput.inputValue())
-				.toContain(userData.email);
+			await expect
+				.soft(app.signUpPage.nameInput)
+				.toHaveValue(userData.username);
+			await expect.soft(app.signUpPage.emailInput).toHaveValue(userData.email);
 			await app.signUpPage.createAccBtn.click();
 		});
 
