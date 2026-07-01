@@ -8,7 +8,7 @@ test.beforeEach(async ({ app }) => {
 	});
 
 	await test.step("Navigating to Sign Up Page", async () => {
-		await app.homePage.loginButton.click();
+		await app.navbar.loginLink.click();
 		await expect.soft(app.loginPage.signUpHeader).toBeVisible();
 	});
 });
@@ -21,12 +21,8 @@ test.describe("Sign Up flow", {
 		createRandomUser: userData,
 	}) => {
 		await test.step("Filling and submitting sign up form", async () => {
-			await app.loginPage.nameInput.fill(userData.username);
-			await app.loginPage.emailSignUpInput.fill(userData.email);
-			await Promise.all([
-				app.loginPage.signUpBtn.click(),
-				app.waitForUrl("/signup"),
-			]);
+			await app.loginPage.beginSignUp(userData.username, userData.email);
+			await app.waitForUrl("/signup");
 		});
 
 		await test.step("Filling and submitting user info data", async () => {
@@ -50,9 +46,7 @@ test.describe("Sign Up flow", {
 
 	test("@TSK-004 Register User with existing email", async ({ app }) => {
 		await test.step("Filling and submitting Sign up form with existing email", async () => {
-			await app.loginPage.nameInput.fill(config.userName);
-			await app.loginPage.emailSignUpInput.fill(config.userEmail);
-			await app.loginPage.signUpBtn.click();
+			await app.loginPage.beginSignUp(config.userName, config.userEmail);
 		});
 
 		await test.step("Validating that error message have appeared", async () => {

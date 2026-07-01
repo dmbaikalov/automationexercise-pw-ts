@@ -9,7 +9,7 @@ test.beforeEach(async ({ app }) => {
 	});
 
 	await test.step("Navigating to Login Page", async () => {
-		await app.homePage.loginButton.click();
+		await app.navbar.loginLink.click();
 		await expect.soft(app.loginPage.signUpHeader).toBeVisible();
 	});
 });
@@ -22,27 +22,22 @@ test.describe("Login / Logout flow", {
 	test("@TSK-002 Login User with correct email and password", async ({
 		app,
 	}) => {
-		await test.step("Filling credentials into the login form", async () => {
-			await app.loginPage.emailLoginInput.fill(config.userEmail);
-			await app.loginPage.passwordInput.fill(config.userPassword);
-		});
-
 		await test.step("Submitting login form", async () => {
-			await app.loginPage.loginBtn.click();
+			await app.loginPage.loginAs(config.userEmail, config.userPassword);
 			await expect(app.homePage.mainHeader).toBeVisible();
 		});
 
 		await test.step("Verifying user is logged in", async () => {
-			expect(await app.homePage.isLoggedIn()).toBeTruthy();
+			expect(await app.navbar.isLoggedIn()).toBeTruthy();
 		});
 
 		await test.step("Clicking logout button", async () => {
-			await app.homePage.logoutBtn.click();
+			await app.navbar.logoutLink.click();
 			await expect(app.homePage.mainHeader).toBeVisible();
 		});
 
 		await test.step("Verifying user is logged out", async () => {
-			expect(await app.homePage.isLoggedIn()).toBeFalsy();
+			expect(await app.navbar.isLoggedIn()).toBeFalsy();
 		});
 	});
 
@@ -50,13 +45,11 @@ test.describe("Login / Logout flow", {
 		test(`@TSK-003 Login User with incorrect ${email} and ${password}`, async ({
 			app,
 		}) => {
-			await test.step("Filling incorrect credentials in Login form", async () => {
-				await app.loginPage.emailLoginInput.fill(email);
-				await app.loginPage.passwordInput.fill(password);
+			await test.step("Attempting login with incorrect credentials", async () => {
+				await app.loginPage.loginAs(email, password);
 			});
 
-			await test.step("Submitting login form and validating error", async () => {
-				await app.loginPage.loginBtn.click();
+			await test.step("Validating error message", async () => {
 				expect(await app.loginPage.isErrorMsgVisible(errorMsg)).toBeTruthy();
 			});
 		});

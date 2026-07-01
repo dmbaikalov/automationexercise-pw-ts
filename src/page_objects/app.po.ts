@@ -1,11 +1,23 @@
 import BasePage from "./basePage.po";
-import { ContactUs, HomePage, LoginPage, SignUpPage } from "./index";
+import {
+	ContactUs,
+	HomePage,
+	LoginPage,
+	NavbarComponent,
+	SignUpPage,
+} from "./index";
 
 export default class Application extends BasePage {
+	private _navbar?: NavbarComponent;
 	private _loginPage?: LoginPage;
 	private _homePage?: HomePage;
 	private _signUpPage?: SignUpPage;
 	private _contactUsPage?: ContactUs;
+
+	get navbar() {
+		if (!this._navbar) this._navbar = new NavbarComponent(this.page);
+		return this._navbar;
+	}
 
 	get loginPage() {
 		if (!this._loginPage) this._loginPage = new LoginPage(this.page);

@@ -5,11 +5,9 @@ import { expect, test as setup } from "../../fixtures/fixtures";
 setup(`Authenticate ${config.userName} user`, async ({ app, page }) => {
 	await app.loginPage.open();
 
-	await app.loginPage.emailLoginInput.fill(config.userEmail);
-	await app.loginPage.passwordInput.fill(config.userPassword);
-	await app.loginPage.loginBtn.click();
+	await app.loginPage.loginAs(config.userEmail, config.userPassword);
 
-	expect(await app.homePage.isLoggedIn()).toBeTruthy();
+	expect(await app.navbar.isLoggedIn()).toBeTruthy();
 
 	await page.context().storageState({ path: CONTEXT_TESTUSER });
 });

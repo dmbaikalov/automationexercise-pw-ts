@@ -1,5 +1,6 @@
 import { config } from "../../../env-config";
 import { expect, test } from "../../fixtures/fixtures";
+import { assertTextVisible } from "../../helpers/assertions";
 
 test.beforeEach(async ({ app }) => {
 	await test.step("Navigating to Home Page", async () => {
@@ -8,8 +9,8 @@ test.beforeEach(async ({ app }) => {
 	});
 
 	await test.step("Navigating to Contact Us Page", async () => {
-		await app.homePage.contactUsBtn.click();
-		expect(await app.contactUsPage.actualUrl()).toContain("/contact_us");
+		await app.navbar.contactUsLink.click();
+		await expect(app.page).toHaveURL(/\/contact_us/);
 		await expect(app.contactUsPage.mainHeader).toBeVisible();
 	});
 });
@@ -28,22 +29,22 @@ test.describe("Contact Us functionality flow", {
 		});
 
 		await test.step("Filling and submitting Contact Us form", async () => {
-			await app.contactUsPage.nameInput.fill("Test User");
-			await app.contactUsPage.emailInput.fill(config.userEmail);
-			await app.contactUsPage.subjectInput.fill("Test Inquiry");
-			await app.contactUsPage.yourMsgInput.fill(
-				"This is an automated test message.",
-			);
-			await app.contactUsPage.uploadFile(
-				app.contactUsPage.chooseFileBtn,
+			await app.contactUsPage.fillAndSubmit(
+				{
+					name: "Test User",
+					email: config.userEmail,
+					subject: "Test Inquiry",
+					message: "This is an automated test message.",
+				},
 				"contactUsFile.pdf",
 			);
-			await app.contactUsPage.submitBtn.click();
 		});
 
 		await test.step("Validating that Contact Us form is successfully submitted", async () => {
-			const text = "Success! Your details have been submitted successfully.";
-			expect(await app.contactUsPage.isTextVisible(text)).toBeTruthy();
+			await assertTextVisible(
+				app.page,
+				"Success! Your details have been submitted successfully.",
+			);
 		});
 	});
 });

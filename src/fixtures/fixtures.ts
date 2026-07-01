@@ -1,4 +1,6 @@
+import { faker } from "@faker-js/faker";
 import { test as base } from "@playwright/test";
+import { config } from "../../env-config";
 import Application from "../page_objects/app.po";
 import type { TUser } from "../types/User.types";
 import { UserBuilder } from "../utils/createRandUser";
@@ -20,11 +22,17 @@ export const test = base.extend<TestFixtures>({
 	},
 
 	// biome-ignore lint/correctness/noEmptyPattern: required by Playwright fixture API
-	userBuilder: async ({}, use) => {
+	userBuilder: async ({}, use, testInfo) => {
+		// Deterministic seed so failures reproduce with the same data
+		const seed = [...testInfo.title].reduce(
+			(acc, c, i) => acc + c.charCodeAt(0) * (i + 1),
+			0,
+		);
+		faker.seed(seed);
 		await use(UserBuilder.create());
 	},
 
-	createRandomUser: async ({ userBuilder }, use) => {
+	createRandomUser: async ({ userBuilder, request }, use) => {
 		const user = userBuilder
 			.withFirstName()
 			.withLastName()
@@ -37,7 +45,15 @@ export const test = base.extend<TestFixtures>({
 			.withZipcode()
 			.withNumber()
 			.build();
+
 		await use(user);
+
+		// Best-effort cleanup — account may not exist if the test failed before creation
+		await request
+			.delete(`${config.apiUrl}/deleteAccount`, {
+				form: { email: user.email, password: user.password },
+			})
+			.catch(() => {});
 	},
 });
 

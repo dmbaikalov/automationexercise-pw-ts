@@ -1,13 +1,20 @@
 import type { Locator, Page } from "@playwright/test";
 import BasePage from "../basePage.po";
 
+type ContactFormData = {
+	name: string;
+	email: string;
+	subject: string;
+	message: string;
+};
+
 export class ContactUs extends BasePage {
 	constructor(page: Page) {
 		super(page, "/contact_us");
 	}
 
 	get mainHeader(): Locator {
-		return this.page.locator("h2").filter({ hasText: "GET IN TOUCH" });
+		return this.page.getByRole("heading", { name: "GET IN TOUCH" });
 	}
 
 	get nameInput(): Locator {
@@ -32,5 +39,16 @@ export class ContactUs extends BasePage {
 
 	get submitBtn(): Locator {
 		return this.page.getByTestId("submit-button");
+	}
+
+	async fillAndSubmit(data: ContactFormData, fileName?: string): Promise<void> {
+		await this.nameInput.fill(data.name);
+		await this.emailInput.fill(data.email);
+		await this.subjectInput.fill(data.subject);
+		await this.yourMsgInput.fill(data.message);
+		if (fileName) {
+			await this.chooseFileBtn.setInputFiles(`src/test_data/${fileName}`);
+		}
+		await this.submitBtn.click();
 	}
 }

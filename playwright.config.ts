@@ -14,6 +14,7 @@ export default defineConfig({
 		baseURL: process.env.BASE_URL,
 		testIdAttribute: "data-qa",
 		trace: process.env.CI ? "on-first-retry" : "retain-on-failure",
+		video: "retain-on-failure",
 		screenshot: "only-on-failure",
 		actionTimeout: 10000,
 		navigationTimeout: 30000,

@@ -7,11 +7,11 @@ export class LoginPage extends BasePage {
 	}
 
 	get signUpHeader(): Locator {
-		return this.page.locator("h2").filter({ hasText: "New User Signup!" });
+		return this.page.getByRole("heading", { name: "New User Signup!" });
 	}
 
 	get loginHeader(): Locator {
-		return this.page.locator("h2").filter({ hasText: "Login to your account" });
+		return this.page.getByRole("heading", { name: "Login to your account" });
 	}
 
 	get nameInput(): Locator {
@@ -38,14 +38,19 @@ export class LoginPage extends BasePage {
 		return this.page.getByTestId("signup-button");
 	}
 
-	/**
-	 *
-	 * Validates that error message is visible
-	 * @param {string} errorMsg
-	 * @return {*}  {Promise<boolean>}
-	 */
+	async loginAs(email: string, password: string): Promise<void> {
+		await this.emailLoginInput.fill(email);
+		await this.passwordInput.fill(password);
+		await this.loginBtn.click();
+	}
+
+	async beginSignUp(name: string, email: string): Promise<void> {
+		await this.nameInput.fill(name);
+		await this.emailSignUpInput.fill(email);
+		await this.signUpBtn.click();
+	}
+
 	async isErrorMsgVisible(errorMsg: string): Promise<boolean> {
-		const errorSlc = this.page.locator("p").filter({ hasText: `${errorMsg}` });
-		return await errorSlc.isVisible();
+		return this.page.locator("p").filter({ hasText: errorMsg }).isVisible();
 	}
 }
