@@ -33,7 +33,7 @@ test.describe("Login / Logout flow", {
 
 		await test.step("Clicking logout button", async () => {
 			await app.navbar.logoutLink.click();
-			await expect(app.homePage.mainHeader).toBeVisible();
+			await expect(app.loginPage.loginHeader).toBeVisible();
 		});
 
 		await test.step("Verifying user is logged out", async () => {

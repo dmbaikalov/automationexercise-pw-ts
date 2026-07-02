@@ -49,6 +49,9 @@ export class ContactUs extends BasePage {
 		if (fileName) {
 			await this.chooseFileBtn.setInputFiles(`src/test_data/${fileName}`);
 		}
+		const dialogPromise = this.page.waitForEvent("dialog");
 		await this.submitBtn.click();
+		const dialog = await dialogPromise;
+		await dialog.accept();
 	}
 }
