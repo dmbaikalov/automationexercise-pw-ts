@@ -34,5 +34,10 @@ export default defineConfig({
 			use: { ...devices["Desktop Chrome"] },
 			dependencies: isStorageStateEmpty() ? ["setup"] : [],
 		},
+
+		{
+			name: "api",
+			testMatch: /.*\.api\.spec\.ts/,
+		},
 	],
 });

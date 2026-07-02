@@ -1,12 +1,14 @@
 import { faker } from "@faker-js/faker";
 import { test as base } from "@playwright/test";
 import { config } from "../../env-config";
+import ApiClient from "../api/apiClient";
 import Application from "../page_objects/app.po";
 import type { TUser } from "../types/User.types";
 import { UserBuilder } from "../utils/createRandUser";
 
 type TestFixtures = {
 	app: Application;
+	apiClient: ApiClient;
 	createRandomUser: TUser;
 	userBuilder: UserBuilder;
 };
@@ -19,6 +21,10 @@ export const test = base.extend<TestFixtures>({
 		});
 		const app = new Application(page, "/");
 		await use(app);
+	},
+
+	apiClient: async ({ request }, use) => {
+		await use(new ApiClient(request));
 	},
 
 	// biome-ignore lint/correctness/noEmptyPattern: required by Playwright fixture API

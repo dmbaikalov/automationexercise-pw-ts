@@ -50,7 +50,7 @@ export class ContactUs extends BasePage {
 			await this.chooseFileBtn.setInputFiles(`src/test_data/${fileName}`);
 		}
 		const dialogPromise = this.page.waitForEvent("dialog");
-		await this.submitBtn.click();
+		await this.submitBtn.click({ force: true });
 		const dialog = await dialogPromise;
 		await dialog.accept();
 	}
