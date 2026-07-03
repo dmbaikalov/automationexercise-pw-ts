@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { CONTEXT_TESTUSER } from "./globals";
 
 export default defineConfig({
 	testDir: "./src/specs",
@@ -15,8 +16,8 @@ export default defineConfig({
 		trace: process.env.CI ? "on-first-retry" : "retain-on-failure",
 		video: "retain-on-failure",
 		screenshot: "only-on-failure",
-		actionTimeout: 10000,
-		navigationTimeout: 30000,
+		actionTimeout: process.env.CI ? 30000 : 10000,
+		navigationTimeout: process.env.CI ? 60000 : 30000,
 	},
 	expect: {
 		timeout: 10000,
@@ -37,6 +38,8 @@ export default defineConfig({
 		{
 			name: "api",
 			testMatch: /.*\.api\.spec\.ts/,
+			dependencies: ["setup"],
+			use: { storageState: CONTEXT_TESTUSER },
 		},
 	],
 });
