@@ -1,7 +1,7 @@
 import { expect, test } from "../../fixtures/fixtures";
 
 test.describe("Search API", {
-	tag: ["@api", "@api_search", "@regression"],
+	tag: ["@api", "@api_search", "@regression", "@smoke"],
 }, () => {
 	test("POST /api/searchProduct returns matching products", async ({
 		apiClient,
@@ -10,7 +10,7 @@ test.describe("Search API", {
 		const body = await response.json();
 
 		expect(body.responseCode).toBe(200);
-		expect(Array.isArray(body.products)).toBeTruthy();
+		expect(body.products).toBeInstanceOf(Array);
 		expect(body.products.length).toBeGreaterThan(0);
 	});
 

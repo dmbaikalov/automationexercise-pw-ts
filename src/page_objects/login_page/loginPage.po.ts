@@ -38,6 +38,10 @@ export class LoginPage extends BasePage {
 		return this.page.getByTestId("signup-button");
 	}
 
+	errorMessage(text: string): Locator {
+		return this.page.locator("p").filter({ hasText: text });
+	}
+
 	async loginAs(email: string, password: string): Promise<void> {
 		await this.emailLoginInput.fill(email);
 		await this.passwordInput.fill(password);
@@ -48,9 +52,5 @@ export class LoginPage extends BasePage {
 		await this.nameInput.fill(name);
 		await this.emailSignUpInput.fill(email);
 		await this.signUpBtn.click();
-	}
-
-	async isErrorMsgVisible(errorMsg: string): Promise<boolean> {
-		return this.page.locator("p").filter({ hasText: errorMsg }).isVisible();
 	}
 }

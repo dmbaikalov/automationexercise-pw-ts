@@ -41,17 +41,21 @@ export class ContactUs extends BasePage {
 		return this.page.getByTestId("submit-button");
 	}
 
+	get successMessage(): Locator {
+		return this.page
+			.locator("#contact-page")
+			.getByText("Success! Your details have been submitted successfully.");
+	}
+
 	async fillAndSubmit(data: ContactFormData, fileName?: string): Promise<void> {
 		await this.nameInput.fill(data.name);
 		await this.emailInput.fill(data.email);
 		await this.subjectInput.fill(data.subject);
 		await this.yourMsgInput.fill(data.message);
 		if (fileName) {
-			await this.chooseFileBtn.setInputFiles(`src/test_data/${fileName}`);
+			await this.uploadFile(this.chooseFileBtn, fileName);
 		}
-		const dialogPromise = this.page.waitForEvent("dialog");
-		await this.submitBtn.click({ force: true });
-		const dialog = await dialogPromise;
-		await dialog.accept();
+		this.page.once("dialog", (dialog) => dialog.accept());
+		await this.submitBtn.click();
 	}
 }

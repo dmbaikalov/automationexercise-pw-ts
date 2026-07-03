@@ -3,7 +3,7 @@ import BasePage from "../basePage.po";
 
 export class HomePage extends BasePage {
 	constructor(page: Page) {
-		super(page, "");
+		super(page, "/");
 	}
 
 	get mainHeader(): Locator {

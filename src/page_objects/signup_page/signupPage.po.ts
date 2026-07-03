@@ -65,7 +65,7 @@ export class SignUpPage extends BasePage {
 		return this.page.getByTestId("address");
 	}
 
-	private get countryOfOriginDropDown() {
+	private get countryOfOriginDropDown(): Locator {
 		return this.page.getByTestId("country");
 	}
 
@@ -89,47 +89,22 @@ export class SignUpPage extends BasePage {
 		return this.page.getByTestId("create-account");
 	}
 
-	private get accCreated() {
+	private get accCreated(): Locator {
 		return this.page.getByText("Account Created!");
 	}
 
-	/**
-	 *
-	 * Selecting a country from a dropdown
-	 * @param {string} country
-	 * @return {*}  {Promise<void>}
-	 */
 	async pickCountry(country: string): Promise<void> {
 		await this.countryOfOriginDropDown.selectOption(country);
 	}
 
-	/**
-	 *
-	 * Selecting sex radio button
-	 * @param {string} sex
-	 * @return {*}  {Promise<void>}
-	 */
 	async pickSex(sex: string): Promise<void> {
-		await this.sexRadioBtn.filter({ hasText: `${sex}` }).click();
+		await this.sexRadioBtn.filter({ hasText: sex }).click();
 	}
 
-	/**
-	 *
-	 * Validating that new user name is showed in header
-	 * @memberof SignUpPage
-	 */
 	async isAccountCreated(): Promise<void> {
 		await expect(this.accCreated).toBeVisible();
 	}
 
-	/**
-	 *
-	 * Selecting date of birth
-	 * @param {string} day
-	 * @param {string} month
-	 * @param {string} year
-	 * @return {*}  {Promise<void>}
-	 */
 	async pickDateOfBirth(
 		day: string,
 		month: string,
@@ -140,16 +115,6 @@ export class SignUpPage extends BasePage {
 		await this.pickYearOfBirth.selectOption(year);
 	}
 
-	/**
-	 *
-	 * Filling Sign Up form with user data
-	 * @param {TUser} userData
-	 * @param {string} sex
-	 * @param {{ day: string; month: string; year: string }} dateOfBirth
-	 * @param {string} country
-	 * @return {*}  {Promise<void>}
-	 * @memberof SignUpPage
-	 */
 	async fillSignUpForm(
 		userData: TUser,
 		sex: string,

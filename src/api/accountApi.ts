@@ -26,18 +26,18 @@ export class AccountApi extends BaseApi {
 	}
 
 	create(user: TUser): Promise<APIResponse> {
-		return this.httpPost("/api/createAccount", this.userToForm(user));
+		return this.httpPost("/createAccount", this.userToForm(user));
 	}
 
 	getByEmail(email: string): Promise<APIResponse> {
-		return this.httpGet("/api/getUserDetailByEmail", { email });
+		return this.httpGet("/getUserDetailByEmail", { email });
 	}
 
 	update(user: TUser): Promise<APIResponse> {
-		return this.httpPut("/api/updateAccount", this.userToForm(user));
+		return this.httpPut("/updateAccount", this.userToForm(user));
 	}
 
 	delete(email: string, password: string): Promise<APIResponse> {
-		return this.httpDelete("/api/deleteAccount", { email, password });
+		return this.httpDelete("/deleteAccount", { email, password });
 	}
 }

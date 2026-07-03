@@ -3,10 +3,10 @@ import BaseApi from "./baseApi";
 
 export class BrandsApi extends BaseApi {
 	getAll(): Promise<APIResponse> {
-		return this.httpGet("/api/brandsList");
+		return this.httpGet("/brandsList");
 	}
 
 	put(): Promise<APIResponse> {
-		return this.httpPut("/api/brandsList");
+		return this.httpPut("/brandsList");
 	}
 }

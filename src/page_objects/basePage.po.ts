@@ -1,4 +1,5 @@
-import { expect, type Page } from "@playwright/test";
+import path from "node:path";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 export default class BasePage {
 	readonly page: Page;
@@ -24,5 +25,11 @@ export default class BasePage {
 
 	async reloadPage(timeout?: number): Promise<void> {
 		await this.page.reload({ timeout });
+	}
+
+	async uploadFile(locator: Locator, fileName: string): Promise<void> {
+		await locator.setInputFiles(
+			path.join(process.cwd(), "src/test_data", fileName),
+		);
 	}
 }

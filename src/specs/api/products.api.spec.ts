@@ -8,8 +8,12 @@ test.describe("Products API", {
 		const body = await response.json();
 
 		expect(body.responseCode).toBe(200);
-		expect(Array.isArray(body.products)).toBeTruthy();
+		expect(body.products).toBeInstanceOf(Array);
 		expect(body.products.length).toBeGreaterThan(0);
+		expect(body.products[0]).toMatchObject({
+			id: expect.any(Number),
+			name: expect.any(String),
+		});
 	});
 
 	test("POST /api/productsList returns 405 method not allowed", async ({

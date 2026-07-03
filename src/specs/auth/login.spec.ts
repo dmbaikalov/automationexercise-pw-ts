@@ -28,7 +28,7 @@ test.describe("Login / Logout flow", {
 		});
 
 		await test.step("Verifying user is logged in", async () => {
-			expect(await app.navbar.isLoggedIn()).toBeTruthy();
+			await expect(app.navbar.userIcon).toBeVisible();
 		});
 
 		await test.step("Clicking logout button", async () => {
@@ -37,20 +37,18 @@ test.describe("Login / Logout flow", {
 		});
 
 		await test.step("Verifying user is logged out", async () => {
-			expect(await app.navbar.isLoggedIn()).toBeFalsy();
+			await expect(app.navbar.userIcon).not.toBeVisible();
 		});
 	});
 
-	userIncorrectData.forEach(({ email, password, errorMsg }) => {
-		test(`@TSK-003 Login User with incorrect ${email} and ${password}`, async ({
-			app,
-		}) => {
+	userIncorrectData.forEach(({ label, email, password, errorMsg }) => {
+		test(`@TSK-003 Login with ${label}`, async ({ app }) => {
 			await test.step("Attempting login with incorrect credentials", async () => {
 				await app.loginPage.loginAs(email, password);
 			});
 
 			await test.step("Validating error message", async () => {
-				expect(await app.loginPage.isErrorMsgVisible(errorMsg)).toBeTruthy();
+				await expect(app.loginPage.errorMessage(errorMsg)).toBeVisible();
 			});
 		});
 	});

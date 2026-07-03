@@ -3,14 +3,14 @@ import BaseApi from "./baseApi";
 
 export class AuthApi extends BaseApi {
 	verifyLogin(email: string, password: string): Promise<APIResponse> {
-		return this.httpPost("/api/verifyLogin", { email, password });
+		return this.httpPost("/verifyLogin", { email, password });
 	}
 
 	verifyLoginMissingEmail(password: string): Promise<APIResponse> {
-		return this.httpPost("/api/verifyLogin", { password });
+		return this.httpPost("/verifyLogin", { password });
 	}
 
 	deleteVerifyLogin(): Promise<APIResponse> {
-		return this.httpDelete("/api/verifyLogin");
+		return this.httpDelete("/verifyLogin");
 	}
 }

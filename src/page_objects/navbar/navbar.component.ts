@@ -19,11 +19,7 @@ export class NavbarComponent {
 		return this.container.getByRole("link", { name: "Contact us" });
 	}
 
-	private get userIcon(): Locator {
+	get userIcon(): Locator {
 		return this.container.locator(".fa-user");
-	}
-
-	async isLoggedIn(): Promise<boolean> {
-		return this.userIcon.isVisible();
 	}
 }

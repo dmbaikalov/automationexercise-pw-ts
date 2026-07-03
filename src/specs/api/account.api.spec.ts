@@ -3,7 +3,7 @@ import { expect, test } from "../../fixtures/fixtures";
 import type { TUserDetail } from "../../types/Api.types";
 
 test.describe("Account API", {
-	tag: ["@api", "@api_account", "@regression"],
+	tag: ["@api", "@api_account", "@regression", "@smoke"],
 }, () => {
 	test("POST /api/createAccount creates a new account", async ({
 		apiClient,
@@ -32,20 +32,28 @@ test.describe("Account API", {
 	}) => {
 		await apiClient.account.create(userData);
 
-		const response = await apiClient.account.update({
+		const updateResponse = await apiClient.account.update({
 			...userData,
 			firstName: "Updated",
 			lastName: "User",
 		});
-		const body = await response.json();
+		const updateBody = await updateResponse.json();
+		expect(updateBody.responseCode).toBe(200);
 
-		expect(body.responseCode).toBe(200);
+		const getResponse = await apiClient.account.getByEmail(userData.email);
+		const getBody: { responseCode: number; user: TUserDetail } =
+			await getResponse.json();
+		expect(getBody.responseCode).toBe(200);
+		expect(getBody.user.first_name).toBe("Updated");
+		expect(getBody.user.last_name).toBe("User");
 	});
 
 	test("DELETE /api/deleteAccount deletes an existing account", async ({
 		apiClient,
-		createRandomUser: userData,
+		userBuilder,
 	}) => {
+		const userData = userBuilder.build();
+
 		await apiClient.account.create(userData);
 
 		const response = await apiClient.account.delete(

@@ -2,7 +2,7 @@ import { config } from "../../../env-config";
 import { expect, test } from "../../fixtures/fixtures";
 
 test.describe("Auth API", {
-	tag: ["@api", "@api_auth", "@regression"],
+	tag: ["@api", "@api_auth", "@regression", "@smoke"],
 }, () => {
 	test("POST /api/verifyLogin with valid credentials returns 200", async ({
 		apiClient,

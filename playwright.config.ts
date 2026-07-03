@@ -1,5 +1,4 @@
 import { defineConfig, devices } from "@playwright/test";
-import { isStorageStateEmpty } from "./env-config";
 
 export default defineConfig({
 	testDir: "./src/specs",
@@ -32,7 +31,7 @@ export default defineConfig({
 		{
 			name: "ui e2e",
 			use: { ...devices["Desktop Chrome"] },
-			dependencies: isStorageStateEmpty() ? ["setup"] : [],
+			dependencies: ["setup"],
 		},
 
 		{

@@ -14,7 +14,7 @@ test.beforeEach(async ({ app }) => {
 });
 
 test.describe("Sign Up flow", {
-	tag: ["@sign_up", "@regression"],
+	tag: ["@sign_up", "@smoke", "@regression"],
 }, () => {
 	test("@TSK-001 Register User", async ({
 		app,
@@ -51,7 +51,7 @@ test.describe("Sign Up flow", {
 
 		await test.step("Validating that error message have appeared", async () => {
 			const errorMsg = "Email Address already exist!";
-			expect(await app.loginPage.isErrorMsgVisible(errorMsg)).toBeTruthy();
+			await expect(app.loginPage.errorMessage(errorMsg)).toBeVisible();
 		});
 	});
 });
