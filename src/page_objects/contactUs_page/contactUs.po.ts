@@ -56,6 +56,9 @@ export class ContactUs extends BasePage {
 			await this.uploadFile(this.chooseFileBtn, fileName);
 		}
 		this.page.once("dialog", (dialog) => dialog.accept());
+		// Barrier: the submit handler is bound by an inline script at the end of <body> —
+		// clicking before "load" bypasses it and triggers a native form POST
+		await this.page.waitForLoadState("load");
 		await this.submitBtn.click();
 	}
 }

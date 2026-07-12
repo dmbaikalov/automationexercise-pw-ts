@@ -32,4 +32,10 @@ export default class BasePage {
 			path.join(process.cwd(), "src/test_data", fileName),
 		);
 	}
+
+	async waitForLoadState(
+		loadState: "load" | "domcontentloaded" | "networkidle",
+	): Promise<void> {
+		await this.page.waitForLoadState(loadState);
+	}
 }

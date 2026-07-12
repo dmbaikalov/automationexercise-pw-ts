@@ -7,10 +7,10 @@ test.describe("Auth API", {
 	test("POST /api/verifyLogin with valid credentials returns 200", async ({
 		apiClient,
 	}) => {
-		const response = await apiClient.auth.verifyLogin(
-			config.userEmail,
-			config.userPassword,
-		);
+		const response = await apiClient.auth.verifyLogin({
+			email: config.userEmail,
+			password: config.userPassword,
+		});
 		const body = await response.json();
 
 		expect(body.responseCode).toBe(200);
@@ -39,10 +39,10 @@ test.describe("Auth API", {
 	test("POST /api/verifyLogin with invalid credentials returns 404", async ({
 		apiClient,
 	}) => {
-		const response = await apiClient.auth.verifyLogin(
-			"invalid@example.com",
-			"wrongpassword123",
-		);
+		const response = await apiClient.auth.verifyLogin({
+			email: "invalid@example.com",
+			password: "wrongpassword123",
+		});
 		const body = await response.json();
 
 		expect(body.responseCode).toBe(404);

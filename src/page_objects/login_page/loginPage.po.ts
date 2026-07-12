@@ -1,4 +1,5 @@
 import type { Locator, Page } from "@playwright/test";
+import type { TUserCreds } from "../../types/User.types";
 import BasePage from "../basePage.po";
 
 export class LoginPage extends BasePage {
@@ -42,9 +43,9 @@ export class LoginPage extends BasePage {
 		return this.page.locator("p").filter({ hasText: text });
 	}
 
-	async loginAs(email: string, password: string): Promise<void> {
-		await this.emailLoginInput.fill(email);
-		await this.passwordInput.fill(password);
+	async loginAs(creds: TUserCreds): Promise<void> {
+		await this.emailLoginInput.fill(creds.email);
+		await this.passwordInput.fill(creds.password);
 		await this.loginBtn.click();
 	}
 

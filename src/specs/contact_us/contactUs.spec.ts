@@ -19,7 +19,10 @@ test.describe("Contact Us functionality flow", {
 }, () => {
 	test.use({ storageState: config.testUserContext });
 
-	test("@TSK-005 Sending Contact Us form", async ({ app }) => {
+	test("@TSK-005 Sending Contact Us form", async ({
+		app,
+		createContactUsFormData: testData,
+	}) => {
 		await test.step("Validate that email input is required", async () => {
 			await expect(app.contactUsPage.emailInput).toHaveAttribute(
 				"required",
@@ -28,15 +31,10 @@ test.describe("Contact Us functionality flow", {
 		});
 
 		await test.step("Filling and submitting Contact Us form", async () => {
-			await app.contactUsPage.fillAndSubmit(
-				{
-					name: "Test User",
-					email: config.userEmail,
-					subject: "Test Inquiry",
-					message: "This is an automated test message.",
-				},
-				"contactUsFile.pdf",
-			);
+			await Promise.all([
+				app.contactUsPage.waitForLoadState("load"),
+				app.contactUsPage.fillAndSubmit(testData, "contactUsFile.pdf"),
+			]);
 		});
 
 		await test.step("Validating that Contact Us form is successfully submitted", async () => {

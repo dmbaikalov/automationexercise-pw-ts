@@ -10,3 +10,5 @@ export type TUser = Readonly<{
 	zipcode: string;
 	number: string;
 }>;
+
+export type TUserCreds = Pick<TUser, "email" | "password">;

@@ -6,8 +6,11 @@ setup(`Authenticate ${config.userName} user`, async ({ app, page }) => {
 	if (!isStorageStateEmpty()) return;
 
 	await app.loginPage.open();
-	await page.waitForLoadState("networkidle");
-	await app.loginPage.loginAs(config.userEmail, config.userPassword);
+	await app.waitForLoadState("load");
+	await app.loginPage.loginAs({
+		email: config.userEmail,
+		password: config.userPassword,
+	});
 	await expect(app.navbar.userIcon).toBeVisible();
 	await page.context().storageState({ path: CONTEXT_TESTUSER });
 });

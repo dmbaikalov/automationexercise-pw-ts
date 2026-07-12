@@ -23,7 +23,10 @@ test.describe("Login / Logout flow", {
 		app,
 	}) => {
 		await test.step("Submitting login form", async () => {
-			await app.loginPage.loginAs(config.userEmail, config.userPassword);
+			await app.loginPage.loginAs({
+				email: config.userEmail,
+				password: config.userPassword,
+			});
 			await expect(app.homePage.mainHeader).toBeVisible();
 		});
 
@@ -44,7 +47,7 @@ test.describe("Login / Logout flow", {
 	userIncorrectData.forEach(({ label, email, password, errorMsg }) => {
 		test(`@TSK-003 Login with ${label}`, async ({ app }) => {
 			await test.step("Attempting login with incorrect credentials", async () => {
-				await app.loginPage.loginAs(email, password);
+				await app.loginPage.loginAs({ email: email, password: password });
 			});
 
 			await test.step("Validating error message", async () => {
