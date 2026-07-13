@@ -305,8 +305,8 @@ Place test files in `src/test_data/`. Use `BasePage.uploadFile(locator, "filenam
 | `@api_search` | Search API tests |
 | `@api_auth` | Auth/verifyLogin API tests |
 | `@api_account` | Account CRUD API tests |
-| `@admin` | Admin-role tests (via `npm run test:admin`) |
-| `@default-user` | Standard-user tests (via `npm run test:default-user`) |
+
+npm shortcuts: `test:smoke`, `test:regression`, `test:api`, `typecheck`.
 
 ## CI/CD (GitHub Actions)
 

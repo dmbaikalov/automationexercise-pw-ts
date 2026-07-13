@@ -8,8 +8,10 @@
     "lint": "npx @biomejs/biome lint --write",
     "prepare": "husky",
     "test": "npx playwright test",
-    "test:admin": "npx playwright test --grep @admin",
-    "test:default-user": "npx playwright test --grep @default-user"
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:regression": "npx playwright test --grep @regression",
+    "test:api": "npx playwright test --project=api",
+    "typecheck": "npx tsc --noEmit"
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
