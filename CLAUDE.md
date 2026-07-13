@@ -28,8 +28,6 @@ src/
 │   └── accountApi.ts
 ├── fixtures/
 │   └── fixtures.ts          ← Custom test/expect — ALWAYS import from here
-├── helpers/
-│   └── assertions.ts        ← Stateless assertion helpers
 ├── page_objects/
 │   ├── basePage.po.ts       ← Shared page methods (open, waitForUrl …)
 │   ├── app.po.ts            ← Application entry point — aggregates all page objects
@@ -58,10 +56,14 @@ src/
 │   ├── contactUsFile.pdf         ← Static upload fixture
 │   └── userIncorrectData.ts      ← Parameterized invalid login cases
 ├── types/
-│   ├── User.types.ts             ← TUser type (Readonly)
-│   └── Api.types.ts              ← TApiResponse, TProduct, TBrand, TUserDetail
+│   ├── User.types.ts             ← TUser (Readonly), TUserCreds
+│   ├── Api.types.ts              ← TApiResponse, TProduct, TBrand, TUserDetail(+Response)
+│   ├── ContactForm.types.ts      ← TContactForm
+│   └── Generic.types.ts          ← TMutable, TNullable (custom mapped types)
 └── utils/
-    └── createRandUser.ts         ← UserBuilder (Builder pattern + Faker)
+    ├── createRandUser.ts         ← UserBuilder (Builder pattern + Faker)
+    ├── createContactUs.ts        ← ContactUsBuilder
+    └── parseResponse.ts          ← parseJson<T> typed response parser
 ```
 
 Top-level config files: `playwright.config.ts`, `env-config.ts`, `globals.ts`, `tsconfig.json`, `biome.json`.
@@ -283,7 +285,7 @@ Place test files in `src/test_data/`. Use `BasePage.uploadFile(locator, "filenam
 ## Authentication / Storage State
 
 - **Global setup** (`src/specs/setup/global.setup.ts`) logs in as the pre-existing account and saves session to `playwright/.auth/user.json`.
-- Setup runs automatically when the auth file does not exist (`isStorageStateEmpty()` check in config).
+- Setup runs automatically when the auth file does not exist (`authStateExists()` guard in `global.setup.ts`).
 - **Global teardown** deletes `playwright/.auth/user.json` and any dynamic `src/test_data/` files after the run.
 - Tests that need an authenticated session: `test.use({ storageState: config.testUserContext })`
 - Tests that need a guest session: `test.use({ storageState: config.guestContext })`

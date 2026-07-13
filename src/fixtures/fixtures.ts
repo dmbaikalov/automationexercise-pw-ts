@@ -15,7 +15,7 @@ type TestFixtures = {
 	userBuilder: UserBuilder;
 	contactUsBuilder: ContactUsBuilder;
 	createContactUsFormData: TContactForm;
-	blockThirdParty: void;
+	blockThirdParty: undefined;
 };
 
 // Deterministic per-test Faker seed so failures reproduce with the same data
@@ -31,7 +31,7 @@ export const test = base.extend<TestFixtures>({
 			/googlesyndication|doubleclick|googleads|adtrafficquality|fundingchoices|maps\.google/,
 			(route) => route.abort(),
 		);
-		await use();
+		await use(undefined);
 	},
 
 	app: async ({ browser, page, blockThirdParty: _ }, use) => {

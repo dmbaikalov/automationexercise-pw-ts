@@ -1,6 +1,7 @@
 import { config } from "../../../env-config";
 import { expect, test } from "../../fixtures/fixtures";
-import type { TUserDetail } from "../../types/Api.types";
+import type { TUserDetailResponse } from "../../types/Api.types";
+import { parseJson } from "../../utils/parseResponse";
 
 test.describe("Account API", {
 	tag: ["@api", "@api_account", "@regression", "@smoke"],
@@ -19,8 +20,7 @@ test.describe("Account API", {
 		apiClient,
 	}) => {
 		const response = await apiClient.account.getByEmail(config.userEmail);
-		const body: { responseCode: number; user: TUserDetail } =
-			await response.json();
+		const body = await parseJson<TUserDetailResponse>(response);
 
 		expect(body.responseCode).toBe(200);
 		expect(body.user.email).toBe(config.userEmail);
@@ -41,8 +41,7 @@ test.describe("Account API", {
 		expect(updateBody.responseCode).toBe(200);
 
 		const getResponse = await apiClient.account.getByEmail(userData.email);
-		const getBody: { responseCode: number; user: TUserDetail } =
-			await getResponse.json();
+		const getBody = await parseJson<TUserDetailResponse>(getResponse);
 		expect(getBody.responseCode).toBe(200);
 		expect(getBody.user.first_name).toBe("Updated");
 		expect(getBody.user.last_name).toBe("User");

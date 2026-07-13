@@ -30,14 +30,8 @@ function isNonEmptyStr(val: unknown): val is string {
 	return typeof val === "string" && val.trim().length > 0;
 }
 
-export function isStorageStateEmpty() {
-	if (fs.existsSync(CONTEXT_TESTUSER)) {
-		console.info("[Info] Storage state files already exist. Skipping setup...");
-		return false;
-	}
-
-	console.info("[Info] Storage state is empty. Proceeding with login...");
-	return true;
+export function authStateExists(): boolean {
+	return fs.existsSync(CONTEXT_TESTUSER);
 }
 
 export { config };

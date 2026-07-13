@@ -31,6 +31,8 @@ export default defineConfig({
 
 		{
 			name: "ui e2e",
+			testMatch: /.*\.spec\.ts/,
+			testIgnore: /.*\.api\.spec\.ts/,
 			use: { ...devices["Desktop Chrome"] },
 			dependencies: ["setup"],
 		},

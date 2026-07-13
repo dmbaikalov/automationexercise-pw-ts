@@ -31,10 +31,7 @@ test.describe("Contact Us functionality flow", {
 		});
 
 		await test.step("Filling and submitting Contact Us form", async () => {
-			await Promise.all([
-				app.contactUsPage.waitForLoadState("load"),
-				app.contactUsPage.fillAndSubmit(testData, "contactUsFile.pdf"),
-			]);
+			await app.contactUsPage.fillAndSubmit(testData, "contactUsFile.pdf");
 		});
 
 		await test.step("Validating that Contact Us form is successfully submitted", async () => {

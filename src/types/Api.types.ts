@@ -21,6 +21,11 @@ export type TBrand = {
 	brand: string;
 };
 
+export type TUserDetailResponse = {
+	responseCode: number;
+	user: TUserDetail;
+};
+
 export type TUserDetail = {
 	id: number;
 	name: string;
