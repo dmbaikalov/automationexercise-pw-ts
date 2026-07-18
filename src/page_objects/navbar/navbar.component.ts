@@ -15,6 +15,14 @@ export class NavbarComponent {
 		return this.container.getByRole("link", { name: "Logout" });
 	}
 
+	get productsLink(): Locator {
+		return this.container.getByRole("link", { name: "Products" });
+	}
+
+	get cartLink(): Locator {
+		return this.container.getByRole("link", { name: "Cart" });
+	}
+
 	get contactUsLink(): Locator {
 		return this.container.getByRole("link", { name: "Contact us" });
 	}
