@@ -70,6 +70,8 @@ src/
 
 Top-level config files: `playwright.config.ts`, `env-config.ts`, `globals.ts`, `tsconfig.json`, `biome.json`.
 
+Reporting tooling (not part of the test runtime, never imported by a spec/fixture): `scripts/generateAllureEnv.ts` — writes Allure `environment.properties` and `executor.json` into `allure-results/` before `allure generate` runs. Chained automatically via `npm run allure:generate` / `allure:serve` and by the CI workflow — no need to run it manually.
+
 ## Running Tests
 
 ```bash
@@ -110,6 +112,7 @@ npx tsc --noEmit
 npx @biomejs/biome check --write src/ globals.ts env-config.ts playwright.config.ts
 
 # Generate the Allure HTML report from allure-results/ (needs a local JRE)
+# Also writes environment.properties/executor.json first — see scripts/generateAllureEnv.ts
 npm run allure:generate
 
 # Generate + open the Allure report in a browser
@@ -117,6 +120,9 @@ npm run allure:open
 
 # Run allure-results/ through a throwaway local server without a separate generate step
 npm run allure:serve
+
+# Regenerate just environment.properties/executor.json without a full report build
+npm run allure:env
 ```
 
 ## Environment Setup
@@ -317,17 +323,19 @@ Place test files in `src/test_data/`. Use `BasePage.uploadFile(locator, "filenam
 | `@api_auth` | Auth/verifyLogin API tests |
 | `@api_account` | Account CRUD API tests |
 
-npm shortcuts: `test:smoke`, `test:regression`, `test:api`, `typecheck`, `allure:generate`, `allure:open`, `allure:serve`.
+npm shortcuts: `test:smoke`, `test:regression`, `test:api`, `typecheck`, `allure:generate`, `allure:open`, `allure:serve`, `allure:env`.
 
 ## CI/CD (GitHub Actions)
 
-- Triggers on push and PR to `main` only
+- Triggers on push/PR to `main`, on a weekly schedule (`59 23 * * 5` — Fridays 23:59 UTC), and manually via `workflow_dispatch` with a `grep_tag` input (defaults to `@regression`)
 - `npm ci` + npm cache + Playwright browser cache keyed on `package-lock.json`
-- Secrets required: `USERNAME`, `EMAIL`, `PASSWORD`, `BASE_URL`, `BASE_API_URL`
+- Secrets required: `USERNAME`, `EMAIL`, `PASSWORD`, `BASE_URL`, `BASE_API_URL`. `BASE_URL`/`BASE_API_URL` are set at job level (`env:`) so both the test run and the Allure environment-info step can read them; `USERNAME`/`EMAIL`/`PASSWORD` stay scoped to the "Run Playwright tests" step only
 - The `allure-playwright` reporter writes to `allure-results/` during the test run (same as local); `npx allure generate` then builds `allure-report/` from it — this step runs with `if: always()` so a failing test run still produces a report
+- Immediately after the test run (and before `allure generate`), a **"Generate Allure environment info"** step runs `scripts/generateAllureEnv.ts`, which writes `allure-results/environment.properties` (Base/API URL, browser, Playwright/Node versions, OS, git branch/commit, trigger source) and `allure-results/executor.json` (links the report back to the exact GitHub Actions run). These render as the **Environment** and **Executor** widgets on the report's Overview page
 - Before generating, the workflow restores the previous run's `allure-report/history` (via the `allure-history` build artifact, fetched cross-run with `dawidd6/action-download-artifact`, third-party) into `allure-results/history` so trend graphs (pass/fail over time, duration, retries) accumulate across builds. This step uses `continue-on-error: true` — the first-ever run (no prior artifact) just produces a report without trend history
 - After generating, the new `allure-report/history` is re-uploaded as the `allure-history` artifact for the next run to pick up
 - The **Allure report** (`allure-report/`) is what gets published to GitHub Pages after every run — not the Playwright HTML reporter's own report. The Playwright HTML report (`playwright-report/`) is still generated and uploaded as a separate, non-Pages build artifact (`playwright-report`, 14-day retention) for local debugging of a specific CI run
+- The repository is public, so the deployed Pages report (`https://dmbaikalov.github.io/automationexercise-pw-ts/`) is publicly viewable by anyone with the link — no GitHub account or repo access required
 - Workers: 1 in CI (serialised to share the single test account); unlimited locally
 
 ## Common Pitfalls
@@ -342,3 +350,4 @@ npm shortcuts: `test:smoke`, `test:regression`, `test:api`, `typecheck`, `allure
 8. **Adding a passthrough constructor to an API class** — Biome flags it as `noUselessConstructor`; the parent constructor is inherited automatically.
 9. **Using `createRandomUser` for read-only API tests** — it spins up cleanup calls unnecessarily. Use `config.userEmail` / `config.userPassword` when the test doesn't create an account.
 10. **Running API specs in the `ui e2e` project** — API spec files match `*.api.spec.ts`; the dedicated `api` project picks them up without launching a browser. Don't add `use: { storageState }` to API specs.
+11. **Spaces in `allure-results/environment.properties` keys** — Allure's parser splits each line on the first whitespace, not on `=`. A key like `Base URL=...` gets misread as name `Base`, value `URL=...`. Use dot-separated keys (`Base.URL`) instead — see `scripts/generateAllureEnv.ts`.

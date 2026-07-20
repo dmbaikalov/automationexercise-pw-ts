@@ -1,8 +1,11 @@
 # automationexercise-pw-ts
 
 [![Playwright Tests](https://github.com/dmbaikalov/automationexercise-pw-ts/actions/workflows/playwright.yml/badge.svg)](https://github.com/dmbaikalov/automationexercise-pw-ts/actions/workflows/playwright.yml)
+[![Allure Report](https://img.shields.io/badge/Allure%20Report-View%20Live-orange)](https://dmbaikalov.github.io/automationexercise-pw-ts/)
 
 End-to-end and API test automation framework for [automationexercise.com](https://www.automationexercise.com), built with **Playwright** and **TypeScript**.
+
+📊 **[View the live test report](https://dmbaikalov.github.io/automationexercise-pw-ts/)** — published to GitHub Pages after every run, no login required.
 
 ## What is covered
 
@@ -116,10 +119,12 @@ test("@TSK-002 Login User with correct email and password", async ({ app }) => {
 
 ## CI (GitHub Actions)
 
-- Runs on every push / PR to `main`, **nightly at 03:00 UTC**, and manually via *Run workflow* with a `grep_tag` parameter (e.g. `@smoke`).
+- Runs on every push / PR to `main`, **weekly on Fridays at 23:59 UTC**, and manually via *Run workflow* with a `grep_tag` parameter (e.g. `@smoke`).
 - npm cache + Playwright browser cache keyed on `package-lock.json`.
 - Credentials come from repository **secrets**; concurrent runs on the same ref are auto-cancelled.
-- HTML report is published to **GitHub Pages** after every run (including failed ones).
+- The **Allure report** is published to **GitHub Pages** after every run (including failed ones) — the repo is public, so the link above is viewable by anyone, no GitHub account needed.
+- Each report includes an **Environment** panel (target URL, browser, Playwright/Node versions, git branch/commit) and an **Executor** link back to the exact CI run that produced it.
+- Pass/fail trend graphs persist across runs — history data is carried forward from build to build via a GitHub Actions artifact.
 
 ## Selector strategy
 
