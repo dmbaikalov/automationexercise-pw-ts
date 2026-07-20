@@ -8,8 +8,16 @@ export default defineConfig({
 	retries: process.env.CI ? 2 : 0,
 	workers: process.env.CI ? 1 : undefined,
 	reporter: process.env.CI
-		? [["junit"], ["html", { open: "never" }]]
-		: [["html", { open: "never" }], ["list"]],
+		? [
+				["junit"],
+				["html", { open: "never" }],
+				["allure-playwright", { resultsDir: "allure-results" }],
+			]
+		: [
+				["html", { open: "never" }],
+				["list"],
+				["allure-playwright", { resultsDir: "allure-results" }],
+			],
 	use: {
 		baseURL: process.env.BASE_URL,
 		testIdAttribute: "data-qa",

@@ -12,6 +12,8 @@ Playwright + TypeScript automation framework for [automationexercise.com](https:
 | `@faker-js/faker` | ^10.2 | Random test data |
 | `dotenv` | ^17 | Environment variable loading |
 | `husky` + `lint-staged` | latest | Pre-commit hooks |
+| `allure-playwright` | ^3.10 | Reporter — writes results to `allure-results/` |
+| `allure-commandline` | ^2.43 | Generates the Allure HTML report from `allure-results/` (requires a local JRE) |
 
 ## Directory Structure
 
@@ -106,6 +108,15 @@ npx tsc --noEmit
 
 # Lint + format
 npx @biomejs/biome check --write src/ globals.ts env-config.ts playwright.config.ts
+
+# Generate the Allure HTML report from allure-results/ (needs a local JRE)
+npm run allure:generate
+
+# Generate + open the Allure report in a browser
+npm run allure:open
+
+# Run allure-results/ through a throwaway local server without a separate generate step
+npm run allure:serve
 ```
 
 ## Environment Setup
@@ -306,14 +317,17 @@ Place test files in `src/test_data/`. Use `BasePage.uploadFile(locator, "filenam
 | `@api_auth` | Auth/verifyLogin API tests |
 | `@api_account` | Account CRUD API tests |
 
-npm shortcuts: `test:smoke`, `test:regression`, `test:api`, `typecheck`.
+npm shortcuts: `test:smoke`, `test:regression`, `test:api`, `typecheck`, `allure:generate`, `allure:open`, `allure:serve`.
 
 ## CI/CD (GitHub Actions)
 
 - Triggers on push and PR to `main` only
 - `npm ci` + npm cache + Playwright browser cache keyed on `package-lock.json`
 - Secrets required: `USERNAME`, `EMAIL`, `PASSWORD`, `BASE_URL`, `BASE_API_URL`
-- HTML report is published to GitHub Pages after every run
+- The `allure-playwright` reporter writes to `allure-results/` during the test run (same as local); `npx allure generate` then builds `allure-report/` from it — this step runs with `if: always()` so a failing test run still produces a report
+- Before generating, the workflow restores the previous run's `allure-report/history` (via the `allure-history` build artifact, fetched cross-run with `dawidd6/action-download-artifact`, third-party) into `allure-results/history` so trend graphs (pass/fail over time, duration, retries) accumulate across builds. This step uses `continue-on-error: true` — the first-ever run (no prior artifact) just produces a report without trend history
+- After generating, the new `allure-report/history` is re-uploaded as the `allure-history` artifact for the next run to pick up
+- The **Allure report** (`allure-report/`) is what gets published to GitHub Pages after every run — not the Playwright HTML reporter's own report. The Playwright HTML report (`playwright-report/`) is still generated and uploaded as a separate, non-Pages build artifact (`playwright-report`, 14-day retention) for local debugging of a specific CI run
 - Workers: 1 in CI (serialised to share the single test account); unlimited locally
 
 ## Common Pitfalls
