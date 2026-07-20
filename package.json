@@ -12,9 +12,10 @@
     "test:regression": "npx playwright test --grep @regression",
     "test:api": "npx playwright test --project=api",
     "typecheck": "npx tsc --noEmit",
-    "allure:generate": "npx allure generate ./allure-results --clean -o ./allure-report",
+    "allure:env": "tsx scripts/generateAllureEnv.ts",
+    "allure:generate": "npm run allure:env && npx allure generate ./allure-results --clean -o ./allure-report",
     "allure:open": "npx allure open ./allure-report",
-    "allure:serve": "npx allure serve ./allure-results"
+    "allure:serve": "npm run allure:env && npx allure serve ./allure-results"
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
@@ -45,5 +46,8 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "tsx": "^4.23.1"
   }
 }

@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "59 23 * * 5"
   workflow_dispatch:
     inputs:
       grep_tag:
@@ -27,6 +27,9 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+      BASE_API_URL: ${{ secrets.BASE_API_URL }}
     steps:
       - uses: actions/checkout@v4
 
@@ -70,8 +73,10 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           EMAIL: ${{ secrets.EMAIL }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          BASE_URL: ${{ secrets.BASE_URL }}
-          BASE_API_URL: ${{ secrets.BASE_API_URL }}
+
+      - name: Generate Allure environment info
+        if: always()
+        run: npx tsx scripts/generateAllureEnv.ts
 
       - name: Generate Allure report
         if: always()
